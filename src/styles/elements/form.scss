@@ -1,0 +1,28 @@
+.input {
+  padding: 8px 12px;
+  background-color: #343A40;
+  border: 1px solid $gray;
+  outline: none;
+  border-radius: 4px;
+  transition: border-color $transition-duration, background-color $transition-duration;
+  color: $white;
+  font-size: 12px;
+  font-weight: 500;
+
+  &[type=search] {
+    padding-left: 34px;
+    background-image: url('~@/assets/icons/search.svg');
+    background-size: 14px;
+    background-repeat: no-repeat;
+    background-position: left 12px top 50%;
+  }
+
+  &:focus {
+    box-shadow: 0 0 4px 0 rgba($gray, 0.5);;
+  }
+
+  &::placeholder {
+    color: $gray;
+    opacity: 1;
+  }
+}

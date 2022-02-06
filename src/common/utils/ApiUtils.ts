@@ -1,4 +1,4 @@
-import { BackendServiceName } from '@/common/types/BackendServiceName';
+import BackendServiceName from '@/common/types/BackendServiceName';
 import { API_URL } from '@/common/constants/apiConstants';
 
 export default class ApiUtils {

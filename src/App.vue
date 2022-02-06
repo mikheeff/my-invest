@@ -5,9 +5,7 @@
       <header class="app-header app__header">
         Portfolio
       </header>
-      <div class="container">
-        <router-view/>
-      </div>
+      <router-view/>
     </main>
   </div>
 </template>

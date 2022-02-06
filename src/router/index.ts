@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
-import Portfolio from '../views/Portfolio.vue';
+import PortfolioOverview from '../views/PortfolioOverview.vue';
 
 Vue.use(VueRouter);
 
@@ -8,7 +8,7 @@ const routes: Array<RouteConfig> = [
   {
     path: '/',
     name: 'Portfolio',
-    component: Portfolio,
+    component: PortfolioOverview,
   },
 ];
 
