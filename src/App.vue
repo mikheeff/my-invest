@@ -1,9 +1,10 @@
 <template>
-  <div id="app">
-    <header class="app-header">
-      My Invest
-    </header>
-    <main class="app-main">
+  <div id="app" class="app">
+    <AppSidebar class="app__sidebar" />
+    <main class="app-main app__main">
+      <header class="app-header app__header">
+        Portfolio
+      </header>
       <div class="container">
         <router-view/>
       </div>
@@ -11,10 +12,19 @@
   </div>
 </template>
 
+<script lang="ts">
+  import Vue from 'vue';
+  import AppSidebar from '@/components/AppSidebar.vue';
+
+  export default Vue.extend({
+    name: 'App',
+    components: { AppSidebar },
+  });
+</script>
+
 <style lang="scss">
   #app {
     display: flex;
-    flex-direction: column;
     min-height: 100vh;
     width: 100%;
     min-width: 1020px;
@@ -22,14 +32,14 @@
     .app-header {
       padding: 12px 24px;
       font-size: 21px;
-      font-weight: 600;
+      height: 113px;
+      border-bottom: 1px solid #343A40;
     }
 
     .app-main {
       flex-grow: 1;
       display: flex;
       flex-direction: column;
-      background-color: #f9f9f9;
     }
   }
 </style>
