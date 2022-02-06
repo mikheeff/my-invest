@@ -1,32 +1,35 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <header class="app-header">
+      My Invest
+    </header>
+    <main class="app-main">
+      <div class="container">
+        <router-view/>
+      </div>
+    </main>
   </div>
 </template>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+  #app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+    min-width: 1020px;
 
-#nav {
-  padding: 30px;
+    .app-header {
+      padding: 12px 24px;
+      font-size: 21px;
+      font-weight: 600;
+    }
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+    .app-main {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      background-color: #f9f9f9;
     }
   }
-}
 </style>
