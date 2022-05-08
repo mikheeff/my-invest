@@ -13,10 +13,14 @@
 <script lang="ts">
   import Vue from 'vue';
   import AppSidebar from '@/components/AppSidebar.vue';
+  import userModule from '@/store/modules/userModule';
 
   export default Vue.extend({
     name: 'App',
     components: { AppSidebar },
+    created() {
+      userModule.getAccounts();
+    },
   });
 </script>
 

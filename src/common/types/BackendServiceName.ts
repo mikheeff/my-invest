@@ -1,5 +1,5 @@
 enum BackendServiceName {
-  USER_SERVICE = 'USER_SERVICE'
+  USER_SERVICE = 'UserService'
 }
 
 export default BackendServiceName;

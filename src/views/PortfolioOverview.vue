@@ -14,22 +14,25 @@
           <button class="button button--primary">Crate</button>
         </div>
       </div>
-      <div class="assets-list portfolio__assets-list">
-        <div class="asset-card asset-list__item">
-          <div class="asset-card__title">
+      <ul class="assets-list portfolio__assets-list">
+        <li class="asset-card asset-list__item">
+          <div class="asset-card__item-cell asset-card__item-cell--title">
             <span class="asset-card__ticker">FB</span>
             <span class="asset-card__name">Facebook</span>
           </div>
-          <img src="@/assets/icons/grow.png">
-          <div class="asset-card__price">
-            <span class="asset-card__price-count">$3,569.11</span>
-            <span class="asset-card__growth">+ 178.2%</span>
+          <div class="asset-card__item-cell">
+            <span class="asset-card__item-cell-value">$3,569.11</span>
           </div>
-        </div>
-      </div>
-    </div>
-    <div class="portfolio-overview__side-block">
-      <h2>Portfolio Diversity</h2>
+          <div class="asset-card__item-cell">
+            <span class="asset-card__item-cell-value">$3,569.11</span>
+            <span class="asset-card__item-cell-description">+ 178.2%</span>
+          </div>
+          <div class="asset-card__item-cell">
+            <span class="asset-card__item-cell-value">$3,569.11</span>
+            <span class="asset-card__item-cell-description">+ 178.2%</span>
+          </div>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -51,7 +54,7 @@
   .portfolio {
     display: flex;
     flex-direction: column;
-    width: 66%;
+    width: 100%;
 
     &__header {
       display: flex;
@@ -69,10 +72,6 @@
       margin-right: 12px;
     }
 
-    &__title {
-      font-size: 16px;
-    }
-
     .assets-list {
       padding: 0 16px;
     }
@@ -83,14 +82,18 @@
       align-items: center;
       padding: 12.5px 12px;
 
-      &__title {
+      &__item-cell {
         display: flex;
         flex-direction: column;
-      }
+        margin-right: 100px;
 
-      &__price {
-        display: flex;
-        flex-direction: column;
+        &:last-child {
+          margin-right: 0;
+        }
+
+        &--title {
+          flex-grow: 1;
+        }
       }
     }
   }

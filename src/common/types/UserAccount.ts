@@ -1,6 +1,6 @@
 import AccountAccessLevel from '@/common/types/AccountAccessLevel';
 
-export interface Account {
+export interface UserAccount {
   id: string;
   type: string;
   name: string;
