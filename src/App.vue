@@ -20,6 +20,7 @@
     components: { AppSidebar },
     created() {
       userModule.getAccounts();
+      userModule.getPortfolio();
     },
   });
 </script>
