@@ -5,4 +5,5 @@ export const API_URL = 'https://invest-public-api.tinkoff.ru/rest/tinkoff.public
 export const BACKEND_SERVICE_ROUTE_MAP: Record<BackendServiceName, string> = {
   [BackendServiceName.USERS_SERVICE]: 'UsersService',
   [BackendServiceName.OPERATIONS_SERVICE]: 'OperationsService',
+  [BackendServiceName.INSTRUMENTS_SERVICE]: 'InstrumentsService',
 };

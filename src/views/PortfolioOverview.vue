@@ -14,11 +14,17 @@
           <button class="button button--primary">Crate</button>
         </div>
       </div>
-      <ul class="assets-list portfolio__assets-list">
-        <li class="asset-card asset-list__item">
+      <div v-if="userModule.isAssetsListLoading"></div>
+      <ul
+        v-else
+        class="assets-list portfolio__assets-list">
+        <li
+          v-for="asset in userModule.positions"
+          :key="asset.figi"
+          class="asset-card asset-list__item">
           <div class="asset-card__item-cell asset-card__item-cell--title">
-            <span class="asset-card__ticker">FB</span>
-            <span class="asset-card__name">Facebook</span>
+            <span class="asset-card__ticker">{{ asset.figi }}</span>
+            <span class="asset-card__name">{{ asset.instrumentType }}</span>
           </div>
           <div class="asset-card__item-cell">
             <span class="asset-card__item-cell-value">$3,569.11</span>
@@ -39,9 +45,15 @@
 
 <script lang="ts">
   import Vue from 'vue';
+  import userModule from '@/store/modules/userModule';
 
   export default Vue.extend({
     name: 'PortfolioOverview',
+    data() {
+      return {
+        userModule,
+      };
+    },
   });
 </script>
 
@@ -81,6 +93,13 @@
       justify-content: space-between;
       align-items: center;
       padding: 12.5px 12px;
+
+      &__name {
+        color: #868E96;
+        font-size: 12px;
+        line-height: 14px;
+        font-weight: 500;
+      }
 
       &__item-cell {
         display: flex;

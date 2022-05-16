@@ -1,10 +1,12 @@
+export interface PortfolioPosition {
+  figi: string;
+  instrumentType: string;
+}
+
 export interface Portfolio {
   expectedYield: {
     nano: number;
     units: string;
   },
-  positions: {
-    figi: string;
-    instrumentType: string;
-  }[];
+  positions: PortfolioPosition[];
 }
