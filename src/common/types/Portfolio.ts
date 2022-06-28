@@ -1,6 +1,7 @@
 export interface PortfolioPosition {
   figi: string;
   instrumentType: string;
+  quantity: { units: string }
 }
 
 export interface Portfolio {

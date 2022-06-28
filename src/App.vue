@@ -8,8 +8,7 @@
         <b-form-radio-group
           id="accounts-group"
           name="accounts-group"
-          :checked="accountId"
-          @input="handleAccountSelect(accountId)"
+          v-model="userModule.accountId"
           :buttons="true">
           <b-form-radio
             v-for="account in userModule.accounts"
@@ -29,7 +28,6 @@
   import userModule from '@/store/modules/userModule';
 
   interface AppData {
-    accountId: string | null;
     userModule: typeof userModule;
   }
 
@@ -37,23 +35,11 @@
     name: 'App',
     data(): AppData {
       return {
-        accountId: null,
         userModule,
       };
     },
     async created() {
       await userModule.getAccounts();
-      this.accountId = userModule.accounts[0].id;
-      this.getAssets();
-    },
-    methods: {
-      handleAccountSelect(accountId: string) {
-        this.accountId = accountId;
-        this.getAssets();
-      },
-      getAssets() {
-        userModule.getAllAssets(this.accountId);
-      },
     },
   });
 </script>

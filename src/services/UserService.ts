@@ -34,4 +34,40 @@ export default class UserService {
 
     return instrument;
   }
+
+  static async getShares(): Promise<Instrument[]> {
+    const { data: { instruments } } = await axios.post<{ instruments: Instrument[] }>(
+      ApiUtils.getApiUrl(BackendServiceName.INSTRUMENTS_SERVICE, 'Shares'),
+      { instrumentStatus: 'INSTRUMENT_STATUS_UNSPECIFIED' },
+    );
+
+    return instruments;
+  }
+
+  static async getEtfs(): Promise<Instrument[]> {
+    const { data: { instruments } } = await axios.post<{ instruments: Instrument[] }>(
+      ApiUtils.getApiUrl(BackendServiceName.INSTRUMENTS_SERVICE, 'Etfs'),
+      { instrumentStatus: 'INSTRUMENT_STATUS_UNSPECIFIED' },
+    );
+
+    return instruments;
+  }
+
+  static async getBonds(): Promise<Instrument[]> {
+    const { data: { instruments } } = await axios.post<{ instruments: Instrument[] }>(
+      ApiUtils.getApiUrl(BackendServiceName.INSTRUMENTS_SERVICE, 'Bonds'),
+      { instrumentStatus: 'INSTRUMENT_STATUS_UNSPECIFIED' },
+    );
+
+    return instruments;
+  }
+
+  static async getCurrencies(): Promise<Instrument[]> {
+    const { data: { instruments } } = await axios.post<{ instruments: Instrument[] }>(
+      ApiUtils.getApiUrl(BackendServiceName.INSTRUMENTS_SERVICE, 'Currencies'),
+      { instrumentStatus: 'INSTRUMENT_STATUS_UNSPECIFIED' },
+    );
+
+    return instruments;
+  }
 }

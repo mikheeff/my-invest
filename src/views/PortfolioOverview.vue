@@ -11,33 +11,23 @@
           >
         </div>
         <div class="portfolio__controls">
-          <button class="button button--primary">Crate</button>
+          <button
+            @click="getInfo"
+            class="button button--primary">
+            Get info
+          </button>
         </div>
       </div>
       <div v-if="userModule.isAssetsListLoading"></div>
       <ul
         v-else
         class="assets-list portfolio__assets-list">
-        <li
+        <ListItem
           v-for="asset in userModule.positions"
           :key="asset.figi"
-          class="asset-card asset-list__item">
-          <div class="asset-card__item-cell asset-card__item-cell--title">
-            <span class="asset-card__ticker">{{ asset.figi }}</span>
-            <span class="asset-card__name">{{ asset.instrumentType }}</span>
-          </div>
-          <div class="asset-card__item-cell">
-            <span class="asset-card__item-cell-value">$3,569.11</span>
-          </div>
-          <div class="asset-card__item-cell">
-            <span class="asset-card__item-cell-value">$3,569.11</span>
-            <span class="asset-card__item-cell-description">+ 178.2%</span>
-          </div>
-          <div class="asset-card__item-cell">
-            <span class="asset-card__item-cell-value">$3,569.11</span>
-            <span class="asset-card__item-cell-description">+ 178.2%</span>
-          </div>
-        </li>
+          :asset="asset"
+          class="asset-list__item">
+        </ListItem>
       </ul>
     </div>
   </div>
@@ -46,13 +36,22 @@
 <script lang="ts">
   import Vue from 'vue';
   import userModule from '@/store/modules/userModule';
+  import ListItem from '@/components/ListItem.vue';
 
   export default Vue.extend({
     name: 'PortfolioOverview',
+    components: { ListItem },
     data() {
       return {
         userModule,
       };
+    },
+    methods: {
+      async getInfo() {
+        await userModule.getAccounts();
+        await userModule.getAllAssets();
+        await userModule.getAllInstruments();
+      },
     },
   });
 </script>
@@ -86,34 +85,6 @@
 
     .assets-list {
       padding: 0 16px;
-    }
-
-    .asset-card {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12.5px 12px;
-
-      &__name {
-        color: #868E96;
-        font-size: 12px;
-        line-height: 14px;
-        font-weight: 500;
-      }
-
-      &__item-cell {
-        display: flex;
-        flex-direction: column;
-        margin-right: 100px;
-
-        &:last-child {
-          margin-right: 0;
-        }
-
-        &--title {
-          flex-grow: 1;
-        }
-      }
     }
   }
 </style>

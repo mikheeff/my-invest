@@ -11,7 +11,12 @@ interface UserState {
   portfolio: Portfolio | null;
   positions: PortfolioPosition[];
   instruments: Instrument[];
+  shares: Instrument[];
+  etfs: Instrument[];
+  bonds: Instrument[];
+  currencies: Instrument[];
   isAssetsListLoading: boolean;
+  accountId: string | null;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -30,16 +35,16 @@ class UserModule extends ExtendedVuexModule<UserState> {
   }
 
   @Action
-  async getAllAssets(accountId: string | null) {
-    if (!accountId) {
+  async getAllAssets() {
+    if (!this.accountId) {
       return;
     }
 
     this.isAssetsListLoading = true;
 
     try {
-      const { positions } = await UserService.getPortfolioById(accountId);
-      this.positions = this.positions.concat(positions);
+      const { positions } = await UserService.getPortfolioById(this.accountId);
+      this.positions = positions;
     } finally {
       this.isAssetsListLoading = false;
     }
@@ -52,6 +57,40 @@ class UserModule extends ExtendedVuexModule<UserState> {
       this.instruments = this.instruments.concat(instrument);
     }));
   }
+
+  @Action
+  async getAllInstruments() {
+    await Promise.all([
+      this.getAllShares(),
+      this.getAllBonds(),
+      this.getAllEtfs(),
+      this.getAllCurrencies(),
+    ]);
+  }
+
+  @Action
+  async getAllShares() {
+    this.shares = await UserService.getShares();
+  }
+
+  @Action
+  async getAllEtfs() {
+    this.etfs = await UserService.getEtfs();
+  }
+
+  @Action
+  async getAllBonds() {
+    this.bonds = await UserService.getBonds();
+  }
+
+  @Action
+  async getAllCurrencies() {
+    this.currencies = await UserService.getCurrencies();
+  }
+
+  get allInstruments() {
+    return [...this.shares, ...this.bonds, ...this.etfs, ...this.currencies];
+  }
 }
 
 const userModule = new UserModule({
@@ -60,7 +99,12 @@ const userModule = new UserModule({
     portfolio: null,
     positions: [],
     instruments: [],
+    shares: [],
+    bonds: [],
+    etfs: [],
+    currencies: [],
     isAssetsListLoading: false,
+    accountId: null,
   },
   store,
   name: 'user',
