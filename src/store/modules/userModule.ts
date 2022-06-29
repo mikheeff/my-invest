@@ -11,10 +11,6 @@ interface UserState {
   portfolio: Portfolio | null;
   positions: PortfolioPosition[];
   instruments: Instrument[];
-  shares: Instrument[];
-  etfs: Instrument[];
-  bonds: Instrument[];
-  currencies: Instrument[];
   isAssetsListLoading: boolean;
   accountId: string | null;
 }
@@ -57,40 +53,6 @@ class UserModule extends ExtendedVuexModule<UserState> {
       this.instruments = this.instruments.concat(instrument);
     }));
   }
-
-  @Action
-  async getAllInstruments() {
-    await Promise.all([
-      this.getAllShares(),
-      this.getAllBonds(),
-      this.getAllEtfs(),
-      this.getAllCurrencies(),
-    ]);
-  }
-
-  @Action
-  async getAllShares() {
-    this.shares = await UserService.getShares();
-  }
-
-  @Action
-  async getAllEtfs() {
-    this.etfs = await UserService.getEtfs();
-  }
-
-  @Action
-  async getAllBonds() {
-    this.bonds = await UserService.getBonds();
-  }
-
-  @Action
-  async getAllCurrencies() {
-    this.currencies = await UserService.getCurrencies();
-  }
-
-  get allInstruments() {
-    return [...this.shares, ...this.bonds, ...this.etfs, ...this.currencies];
-  }
 }
 
 const userModule = new UserModule({
@@ -99,10 +61,6 @@ const userModule = new UserModule({
     portfolio: null,
     positions: [],
     instruments: [],
-    shares: [],
-    bonds: [],
-    etfs: [],
-    currencies: [],
     isAssetsListLoading: false,
     accountId: null,
   },

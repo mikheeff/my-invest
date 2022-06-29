@@ -12,7 +12,7 @@
               Shares
             </div>
             <div class="portfolio-stats__item-value">
-              (65%)
+              {{ sharesAmount }}(65%)
             </div>
           </div>
           <div class="portfolio-stats__item">
@@ -39,9 +39,25 @@
 
 <script lang="ts">
   import Vue from 'vue';
+  import userModule from '@/store/modules/userModule';
+  import { InstrumentType } from '@/common/types/Instrument';
+  import MoneyUtils from '@/common/utils/MoneyUtils';
 
   export default Vue.extend({
     name: 'PortfolioStats',
+    data() {
+      return {
+        userModule,
+      };
+    },
+    computed: {
+      sharesAmount() {
+        const shares = userModule.positions
+          .filter((position) => position.instrumentType === InstrumentType.SHARE);
+
+        return shares.reduce((acc, share) => acc + MoneyUtils.getPositionTotalAmount(share), 0);
+      },
+    },
   });
 </script>
 

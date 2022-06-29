@@ -45,14 +45,16 @@
         isLoading: false,
       };
     },
+    created() {
+      this.getInfo();
+    },
     methods: {
       async getInfo() {
         this.isLoading = true;
 
         try {
           await userModule.getAccounts();
-          await userModule.getAllAssets();
-          await userModule.getAllInstruments();
+          userModule.accountId = userModule.accounts[0].id;
         } finally {
           this.isLoading = false;
         }

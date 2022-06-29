@@ -27,6 +27,7 @@
   import Vue, { PropType } from 'vue';
   import MoneyUtils from '@/common/utils/MoneyUtils';
   import { PortfolioPosition } from '@/common/types/Portfolio';
+  import { ALL_INSTRUMENTS } from '@/common/constants/allInstruments';
   import userModule from '../../store/modules/userModule';
 
   export default Vue.extend({
@@ -39,17 +40,17 @@
     },
     computed: {
       assetName(): string {
-        const asset = userModule.allInstruments.find((i) => i.figi === this.asset.figi);
+        const asset = ALL_INSTRUMENTS.find((i) => i.figi === this.asset.figi);
         return asset ? asset.name : '';
       },
       price(): string {
         return MoneyUtils.formatAmount(this.asset.currentPrice);
       },
       totalPrice(): string {
-        const assetPrice = MoneyUtils.getNumberFromAmount(this.asset.currentPrice);
-        const units = Number(this.asset.quantity.units);
-
-        return MoneyUtils.format(assetPrice * units, this.asset.currentPrice.currency);
+        return MoneyUtils.format(
+          MoneyUtils.getPositionTotalAmount(this.asset),
+          this.asset.currentPrice.currency,
+        );
       },
       isNegativeProfit(): boolean {
         const currentPrice = MoneyUtils.getNumberFromAmount(this.asset.currentPrice);

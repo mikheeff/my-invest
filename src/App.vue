@@ -9,6 +9,7 @@
           id="accounts-group"
           name="accounts-group"
           v-model="userModule.accountId"
+          @input="userModule.getAllAssets()"
           :buttons="true">
           <b-form-radio
             v-for="account in userModule.accounts"

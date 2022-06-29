@@ -1,4 +1,5 @@
 import { Amount } from '@/common/types/Amount';
+import { PortfolioPosition } from '@/common/types/Portfolio';
 
 export default class MoneyUtils {
   static format(amount: number, currency: string): string {
@@ -14,5 +15,11 @@ export default class MoneyUtils {
 
   static getNumberFromAmount(price: Amount): number {
     return price.nano / 1000000000 + Number(price.units);
+  }
+
+  static getPositionTotalAmount(position: PortfolioPosition): number {
+    const assetPrice = this.getNumberFromAmount(position.currentPrice);
+    const units = Number(position.quantity.units);
+    return assetPrice * units;
   }
 }
