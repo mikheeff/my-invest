@@ -27,7 +27,7 @@
   import Vue, { PropType } from 'vue';
   import MoneyUtils from '@/common/utils/MoneyUtils';
   import { PortfolioPosition } from '@/common/types/Portfolio';
-  import userModule from '../store/modules/userModule';
+  import userModule from '../../store/modules/userModule';
 
   export default Vue.extend({
     name: 'ListItem',
@@ -43,24 +43,24 @@
         return asset ? asset.name : '';
       },
       price(): string {
-        return MoneyUtils.formatPrice(this.asset.currentPrice);
+        return MoneyUtils.formatAmount(this.asset.currentPrice);
       },
       totalPrice(): string {
-        const assetPrice = MoneyUtils.getNumberFromPrice(this.asset.currentPrice);
+        const assetPrice = MoneyUtils.getNumberFromAmount(this.asset.currentPrice);
         const units = Number(this.asset.quantity.units);
 
         return MoneyUtils.format(assetPrice * units, this.asset.currentPrice.currency);
       },
       isNegativeProfit(): boolean {
-        const currentPrice = MoneyUtils.getNumberFromPrice(this.asset.currentPrice);
-        const averageBuyPrice = MoneyUtils.getNumberFromPrice(this.asset.averagePositionPrice);
+        const currentPrice = MoneyUtils.getNumberFromAmount(this.asset.currentPrice);
+        const averageBuyPrice = MoneyUtils.getNumberFromAmount(this.asset.averagePositionPrice);
         const delta = currentPrice - averageBuyPrice;
 
         return Math.sign(delta) === -1;
       },
       profit(): string {
-        const currentPrice = MoneyUtils.getNumberFromPrice(this.asset.currentPrice);
-        const averageBuyPrice = MoneyUtils.getNumberFromPrice(this.asset.averagePositionPrice);
+        const currentPrice = MoneyUtils.getNumberFromAmount(this.asset.currentPrice);
+        const averageBuyPrice = MoneyUtils.getNumberFromAmount(this.asset.averagePositionPrice);
         const delta = (currentPrice - averageBuyPrice) * Number(this.asset.quantity.units);
         const sign = Math.sign(delta) === -1 ? '-' : '+';
         const deltaString = MoneyUtils.format(Math.abs(delta), this.asset.currentPrice.currency);

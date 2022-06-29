@@ -1,11 +1,11 @@
-import { Price } from '@/common/types/Price';
+import { Amount } from '@/common/types/Amount';
 
 export interface PortfolioPosition {
   figi: string;
   instrumentType: string;
   quantity: { units: string };
-  averagePositionPrice: Price;
-  currentPrice: Price;
+  averagePositionPrice: Amount;
+  currentPrice: Amount;
 }
 
 export interface Portfolio {

@@ -52,7 +52,7 @@
     min-width: 1020px;
 
     .app-header {
-      padding: 12px 24px;
+      padding: 12px 36px;
       font-size: 21px;
       border-bottom: 1px solid #343A40;
     }

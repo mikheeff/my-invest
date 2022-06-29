@@ -1,4 +1,4 @@
-import { Price } from '@/common/types/Price';
+import { Amount } from '@/common/types/Amount';
 
 export default class MoneyUtils {
   static format(amount: number, currency: string): string {
@@ -8,11 +8,11 @@ export default class MoneyUtils {
     }).format(amount);
   }
 
-  static formatPrice(price: Price): string {
-    return this.format(this.getNumberFromPrice(price), price.currency);
+  static formatAmount(price: Amount): string {
+    return this.format(this.getNumberFromAmount(price), price.currency);
   }
 
-  static getNumberFromPrice(price: Price): number {
+  static getNumberFromAmount(price: Amount): number {
     return price.nano / 1000000000 + Number(price.units);
   }
 }
