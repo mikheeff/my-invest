@@ -18,7 +18,7 @@
           </button>
         </div>
       </div>
-      <div v-if="userModule.isAssetsListLoading"></div>
+      <div v-if="isLoading">Loading</div>
       <ul
         v-else
         class="assets-list portfolio__assets-list">
@@ -44,13 +44,20 @@
     data() {
       return {
         userModule,
+        isLoading: false,
       };
     },
     methods: {
       async getInfo() {
-        await userModule.getAccounts();
-        await userModule.getAllAssets();
-        await userModule.getAllInstruments();
+        this.isLoading = true;
+
+        try {
+          await userModule.getAccounts();
+          await userModule.getAllAssets();
+          await userModule.getAllInstruments();
+        } finally {
+          this.isLoading = false;
+        }
       },
     },
   });
