@@ -6,7 +6,7 @@
     </div>
     <div class="list-item__item-cell">
       <span class="list-item__item-cell-value">{{ price }}</span>
-      <span class="list-item__item-cell-description">{{ asset.quantity.units }}</span>
+      <span class="list-item__item-cell-description">{{ amount }}</span>
     </div>
     <div class="list-item__item-cell">
       <span class="list-item__item-cell-value">{{ totalPrice }}</span>
@@ -44,7 +44,10 @@
         return asset ? asset.name : '';
       },
       price(): string {
-        return MoneyUtils.formatAmount(this.asset.currentPrice);
+        return MoneyUtils.formatCurrencyAmount(this.asset.currentPrice);
+      },
+      amount(): string {
+        return MoneyUtils.getNumberFromAmount(this.asset.quantity).toString();
       },
       totalPrice(): string {
         return MoneyUtils.format(
@@ -62,7 +65,8 @@
       profit(): string {
         const currentPrice = MoneyUtils.getNumberFromAmount(this.asset.currentPrice);
         const averageBuyPrice = MoneyUtils.getNumberFromAmount(this.asset.averagePositionPrice);
-        const delta = (currentPrice - averageBuyPrice) * Number(this.asset.quantity.units);
+        const assetQuantity = MoneyUtils.getNumberFromAmount(this.asset.quantity);
+        const delta = (currentPrice - averageBuyPrice) * assetQuantity;
         const sign = Math.sign(delta) === -1 ? '-' : '+';
         const deltaString = MoneyUtils.format(Math.abs(delta), this.asset.currentPrice.currency);
         const percents = (1 - (currentPrice / averageBuyPrice)) * 100;

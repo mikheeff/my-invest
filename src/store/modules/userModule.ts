@@ -5,6 +5,9 @@ import { UserAccount } from '@/common/types/UserAccount';
 import UserService from '@/services/UserService';
 import { Portfolio, PortfolioPosition } from '@/common/types/Portfolio';
 import { Instrument } from '@/common/types/Instrument';
+import MoneyUtils from '@/common/utils/MoneyUtils';
+import { CURRENCY_FIGI_MAP } from '@/common/constants/allInstruments';
+import Currency from '@/common/types/Currency';
 
 interface UserState {
   accounts: UserAccount[];
@@ -52,6 +55,17 @@ class UserModule extends ExtendedVuexModule<UserState> {
       const instrument = await UserService.getInstrumentById(position.figi);
       this.instruments = this.instruments.concat(instrument);
     }));
+  }
+
+  get usdPriceInRub() {
+    const usdPosition = this.positions
+      .find((pos) => pos.figi === CURRENCY_FIGI_MAP[Currency.USD]);
+
+    if (!usdPosition) {
+      return 0;
+    }
+
+    return MoneyUtils.getNumberFromAmount(usdPosition.currentPrice);
   }
 }
 

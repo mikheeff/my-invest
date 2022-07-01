@@ -1,15 +1,16 @@
-import { Amount } from '@/common/types/Amount';
+import { Amount, CurrencyAmount } from '@/common/types/CurrencyAmount';
 import { PortfolioPosition } from '@/common/types/Portfolio';
+import Currency from '@/common/types/Currency';
 
 export default class MoneyUtils {
-  static format(amount: number, currency: string): string {
+  static format(amount: number, currency: Currency): string {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency,
     }).format(amount);
   }
 
-  static formatAmount(price: Amount): string {
+  static formatCurrencyAmount(price: CurrencyAmount): string {
     return this.format(this.getNumberFromAmount(price), price.currency);
   }
 
@@ -19,7 +20,7 @@ export default class MoneyUtils {
 
   static getPositionTotalAmount(position: PortfolioPosition): number {
     const assetPrice = this.getNumberFromAmount(position.currentPrice);
-    const units = Number(position.quantity.units);
+    const units = this.getNumberFromAmount(position.quantity);
     return assetPrice * units;
   }
 }

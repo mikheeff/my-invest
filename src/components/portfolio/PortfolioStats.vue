@@ -12,7 +12,7 @@
               Shares
             </div>
             <div class="portfolio-stats__item-value">
-              {{ sharesAmount }}(65%)
+              {{ sharesAmount }} (65%)
             </div>
           </div>
           <div class="portfolio-stats__item">
@@ -20,7 +20,7 @@
               Bonds
             </div>
             <div class="portfolio-stats__item-value">
-              (25%)
+              {{ etfsAmount }} (25%)
             </div>
           </div>
           <div class="portfolio-stats__item">
@@ -28,7 +28,15 @@
               Gold
             </div>
             <div class="portfolio-stats__item-value">
-              (10%)
+              {{ bondsAmount }}(10%)
+            </div>
+          </div>
+          <div class="portfolio-stats__item">
+            <div class="portfolio-stats__item-key">
+              Currency
+            </div>
+            <div class="portfolio-stats__item-value">
+              {{ currenciesAmount }}(10%)
             </div>
           </div>
         </div>
@@ -42,6 +50,8 @@
   import userModule from '@/store/modules/userModule';
   import { InstrumentType } from '@/common/types/Instrument';
   import MoneyUtils from '@/common/utils/MoneyUtils';
+  import Currency from '@/common/types/Currency';
+  import { CURRENCY_FIGI_MAP } from '@/common/constants/allInstruments';
 
   export default Vue.extend({
     name: 'PortfolioStats',
@@ -51,11 +61,55 @@
       };
     },
     computed: {
-      sharesAmount() {
-        const shares = userModule.positions
-          .filter((position) => position.instrumentType === InstrumentType.SHARE);
+      sharesAmount(): string {
+        return MoneyUtils
+          .format(this.getTotalAmountByInstrumentType(InstrumentType.SHARE), Currency.USD);
+      },
+      etfsAmount(): string {
+        return MoneyUtils
+          .format(this.getTotalAmountByInstrumentType(InstrumentType.ETF), Currency.USD);
+      },
+      bondsAmount(): string {
+        return MoneyUtils
+          .format(this.getTotalAmountByInstrumentType(InstrumentType.BONDS), Currency.USD);
+      },
+      currenciesAmount(): string {
+        return MoneyUtils
+          .format(this.getTotalAmountByInstrumentType(InstrumentType.CURRENCY), Currency.USD);
+      },
+    },
+    methods: {
+      getTotalAmountByInstrumentType(instrumentType: InstrumentType) {
+        const instruments = userModule.positions
+          .filter((position) => position.instrumentType === instrumentType);
 
-        return shares.reduce((acc, share) => acc + MoneyUtils.getPositionTotalAmount(share), 0);
+        return instruments.reduce((acc, share) => {
+          const positionTotalAmount = MoneyUtils.getPositionTotalAmount(share);
+          const rate = this.getCurrencyRateToUsd(share.currentPrice.currency);
+          const shareAmountInUsd = positionTotalAmount / rate;
+
+          return acc + shareAmountInUsd;
+        }, 0);
+      },
+      getCurrencyRateToUsd(currency: Currency) {
+        if (currency === Currency.USD) {
+          return 1;
+        }
+
+        if (currency === Currency.RUB) {
+          return userModule.usdPriceInRub;
+        }
+
+        const currencyPosition = userModule.positions
+          .find((pos) => pos.figi === CURRENCY_FIGI_MAP[currency]);
+
+        if (!currencyPosition) {
+          throw new Error('no such currency');
+        }
+
+        const currencyPriceInRub = MoneyUtils.getNumberFromAmount(currencyPosition.currentPrice);
+
+        return currencyPriceInRub / userModule.usdPriceInRub;
       },
     },
   });
