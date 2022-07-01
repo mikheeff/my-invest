@@ -1,3 +1,5 @@
+import FocusType from '@/common/types/FocusType';
+
 export enum InstrumentType {
   SHARE = 'share',
   CURRENCY = 'currency',
@@ -11,4 +13,8 @@ export interface Instrument {
   name: string;
   currency: string;
   countryOfRisk: string;
+}
+
+export interface EtfInstrument extends Instrument {
+  focusType: FocusType;
 }

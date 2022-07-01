@@ -20,7 +20,7 @@
               Bonds
             </div>
             <div class="portfolio-stats__item-value">
-              {{ etfsAmount }} (25%)
+              {{ bondsAmount }} (25%)
             </div>
           </div>
           <div class="portfolio-stats__item">
@@ -28,7 +28,7 @@
               Gold
             </div>
             <div class="portfolio-stats__item-value">
-              {{ bondsAmount }}(10%)
+              {{ goldAmount }}(10%)
             </div>
           </div>
           <div class="portfolio-stats__item">
@@ -51,7 +51,12 @@
   import { InstrumentType } from '@/common/types/Instrument';
   import MoneyUtils from '@/common/utils/MoneyUtils';
   import Currency from '@/common/types/Currency';
-  import { CURRENCY_FIGI_MAP } from '@/common/constants/allInstruments';
+  import {
+    ALL_ETFS,
+    CURRENCY_FIGI_MAP,
+    FOCUS_TYPE_INSTRUMENT_TYPE_MAP,
+  } from '@/common/constants/allInstruments';
+  import FocusType from '@/common/types/FocusType';
 
   export default Vue.extend({
     name: 'PortfolioStats',
@@ -65,10 +70,6 @@
         return MoneyUtils
           .format(this.getTotalAmountByInstrumentType(InstrumentType.SHARE), Currency.USD);
       },
-      etfsAmount(): string {
-        return MoneyUtils
-          .format(this.getTotalAmountByInstrumentType(InstrumentType.ETF), Currency.USD);
-      },
       bondsAmount(): string {
         return MoneyUtils
           .format(this.getTotalAmountByInstrumentType(InstrumentType.BONDS), Currency.USD);
@@ -77,18 +78,55 @@
         return MoneyUtils
           .format(this.getTotalAmountByInstrumentType(InstrumentType.CURRENCY), Currency.USD);
       },
+      goldAmount(): string {
+        const goldPosition = userModule.positions
+          .find((pos) => pos.figi === CURRENCY_FIGI_MAP[Currency.GOLD]);
+
+        const etfPositions = userModule.positions
+          .filter((position) => {
+            const etfInstrument = ALL_ETFS.find((i) => i.figi === position.figi);
+            const isSameAssetClass = etfInstrument
+              ? etfInstrument.focusType === FocusType.GOLD
+              : false;
+
+            return position.instrumentType === InstrumentType.ETF && isSameAssetClass;
+          });
+        const positions = goldPosition ? [goldPosition, ...etfPositions] : [...etfPositions];
+
+        const goldAmount = positions.reduce((acc, position) => {
+          const positionTotalAmount = MoneyUtils.getPositionTotalAmount(position);
+          const rate = this.getCurrencyRateToUsd(position.currentPrice.currency);
+          const positionAmountInUsd = positionTotalAmount / rate;
+
+          return acc + positionAmountInUsd;
+        }, 0);
+
+        return MoneyUtils.format(goldAmount, Currency.USD);
+      },
     },
     methods: {
       getTotalAmountByInstrumentType(instrumentType: InstrumentType) {
-        const instruments = userModule.positions
+        const positionsByInstrumentType = userModule.positions
           .filter((position) => position.instrumentType === instrumentType);
 
-        return instruments.reduce((acc, share) => {
-          const positionTotalAmount = MoneyUtils.getPositionTotalAmount(share);
-          const rate = this.getCurrencyRateToUsd(share.currentPrice.currency);
-          const shareAmountInUsd = positionTotalAmount / rate;
+        const etfPositions = userModule.positions
+          .filter((position) => {
+            const etfInstrument = ALL_ETFS.find((i) => i.figi === position.figi);
+            const isSameAssetClass = etfInstrument
+              ? FOCUS_TYPE_INSTRUMENT_TYPE_MAP[etfInstrument.focusType] === instrumentType
+              : false;
 
-          return acc + shareAmountInUsd;
+            return position.instrumentType === InstrumentType.ETF && isSameAssetClass;
+          });
+
+        const positions = [...positionsByInstrumentType, ...etfPositions];
+
+        return positions.reduce((acc, position) => {
+          const positionTotalAmount = MoneyUtils.getPositionTotalAmount(position);
+          const rate = this.getCurrencyRateToUsd(position.currentPrice.currency);
+          const positionAmountInUsd = positionTotalAmount / rate;
+
+          return acc + positionAmountInUsd;
         }, 0);
       },
       getCurrencyRateToUsd(currency: Currency) {

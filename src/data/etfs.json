@@ -486,7 +486,7 @@
     "shortEnabledFlag": false,
     "name": "FinEx Еврооблигации рос. компаний (RUB)",
     "exchange": "MOEX_PLUS",
-    "focusType": "equity",
+    "focusType": "fixed_income",
     "releasedDate": "2013-04-30T00:00:00Z",
     "numShares": {
       "units": "580543",
@@ -2190,7 +2190,7 @@
     "shortEnabledFlag": false,
     "name": "FinEx Облигации TIPS (RUB, хедж)",
     "exchange": "MOEX_PLUS",
-    "focusType": "equity",
+    "focusType": "fixed_income",
     "countryOfRisk": "IE",
     "countryOfRiskName": "",
     "sector": "other",
@@ -2441,7 +2441,7 @@
       "units": "0",
       "nano": 950000000
     },
-    "focusType": "equity",
+    "focusType": "fixed_income",
     "releasedDate": "2013-02-25T00:00:00Z",
     "numShares": {
       "units": "4122320",
@@ -2733,7 +2733,7 @@
       "units": "0",
       "nano": 450000000
     },
-    "focusType": "equity",
+    "focusType": "fixed_income",
     "releasedDate": "2014-05-16T00:00:00Z",
     "numShares": {
       "units": "840000",
@@ -2978,7 +2978,7 @@
       "units": "0",
       "nano": 450000000
     },
-    "focusType": "equity",
+    "focusType": "gold",
     "releasedDate": "2020-07-13T00:00:00Z",
     "countryOfRisk": "",
     "countryOfRiskName": "",

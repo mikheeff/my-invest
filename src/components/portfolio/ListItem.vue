@@ -2,7 +2,7 @@
   <li class="list-item">
     <div class="list-item__item-cell asset-card__item-cell--title">
       <span class="list-item__ticker">{{ assetName }}</span>
-      <span class="list-item__name">{{ asset.instrumentType }}</span>
+      <span class="list-item__name">{{ description }}</span>
     </div>
     <div class="list-item__item-cell">
       <span class="list-item__item-cell-value">{{ price }}</span>
@@ -28,7 +28,7 @@
   import MoneyUtils from '@/common/utils/MoneyUtils';
   import { PortfolioPosition } from '@/common/types/Portfolio';
   import { ALL_INSTRUMENTS } from '@/common/constants/allInstruments';
-  import userModule from '../../store/modules/userModule';
+  import { Instrument, InstrumentType } from '@/common/types/Instrument';
 
   export default Vue.extend({
     name: 'ListItem',
@@ -39,9 +39,17 @@
       },
     },
     computed: {
+      instrumentInfo(): Instrument | undefined {
+        return ALL_INSTRUMENTS.find((i) => i.figi === this.asset.figi);
+      },
       assetName(): string {
-        const asset = ALL_INSTRUMENTS.find((i) => i.figi === this.asset.figi);
-        return asset ? asset.name : '';
+        return this.instrumentInfo ? this.instrumentInfo.name : '';
+      },
+      description(): string | undefined {
+        const typeString = this.asset.instrumentType === InstrumentType.ETF
+          ? ` (${this.instrumentInfo?.focusType})` : '';
+
+        return `${this.instrumentInfo?.ticker}${typeString}`;
       },
       price(): string {
         return MoneyUtils.formatCurrencyAmount(this.asset.currentPrice);
