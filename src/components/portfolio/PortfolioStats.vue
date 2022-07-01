@@ -12,7 +12,7 @@
               Shares
             </div>
             <div class="portfolio-stats__item-value">
-              {{ sharesAmount }} (65%)
+              {{ sharesAmount }} ({{ sharesPercent }})
             </div>
           </div>
           <div class="portfolio-stats__item">
@@ -20,7 +20,7 @@
               Bonds
             </div>
             <div class="portfolio-stats__item-value">
-              {{ bondsAmount }} (25%)
+              {{ bondsAmount }} ({{ bondPercent }})
             </div>
           </div>
           <div class="portfolio-stats__item">
@@ -28,7 +28,7 @@
               Gold
             </div>
             <div class="portfolio-stats__item-value">
-              {{ goldAmount }}(10%)
+              {{ formattedGoldAmount }} ({{ goldPercent }})
             </div>
           </div>
           <div class="portfolio-stats__item">
@@ -36,7 +36,7 @@
               Currency
             </div>
             <div class="portfolio-stats__item-value">
-              {{ currenciesAmount }}(10%)
+              {{ currenciesAmount }} ({{ currencyPercent }})
             </div>
           </div>
         </div>
@@ -66,6 +66,25 @@
       };
     },
     computed: {
+      totalAmount(): number {
+        return this.getTotalAmountByInstrumentType(InstrumentType.SHARE)
+          + this.getTotalAmountByInstrumentType(InstrumentType.BONDS)
+          + this.getTotalAmountByInstrumentType(InstrumentType.CURRENCY)
+          + this.goldAmount;
+      },
+      sharesPercent(): string {
+        return this.getPercentsByAmount(this.getTotalAmountByInstrumentType(InstrumentType.SHARE));
+      },
+      bondPercent(): string {
+        return this.getPercentsByAmount(this.getTotalAmountByInstrumentType(InstrumentType.BONDS));
+      },
+      goldPercent(): string {
+        return this.getPercentsByAmount(this.goldAmount);
+      },
+      currencyPercent(): string {
+        const amount = this.getTotalAmountByInstrumentType(InstrumentType.CURRENCY);
+        return this.getPercentsByAmount(amount);
+      },
       sharesAmount(): string {
         return MoneyUtils
           .format(this.getTotalAmountByInstrumentType(InstrumentType.SHARE), Currency.USD);
@@ -78,7 +97,10 @@
         return MoneyUtils
           .format(this.getTotalAmountByInstrumentType(InstrumentType.CURRENCY), Currency.USD);
       },
-      goldAmount(): string {
+      formattedGoldAmount(): string {
+        return MoneyUtils.format(this.goldAmount, Currency.USD);
+      },
+      goldAmount(): number {
         const goldPosition = userModule.positions
           .find((pos) => pos.figi === CURRENCY_FIGI_MAP[Currency.GOLD]);
 
@@ -101,10 +123,15 @@
           return acc + positionAmountInUsd;
         }, 0);
 
-        return MoneyUtils.format(goldAmount, Currency.USD);
+        return goldAmount;
       },
     },
     methods: {
+      getPercentsByAmount(amount: number): string {
+        const percent = (amount / this.totalAmount) * 100;
+        const percentFormatted = Math.abs(Math.round(percent * 100) / 100);
+        return `${percentFormatted}%`;
+      },
       getTotalAmountByInstrumentType(instrumentType: InstrumentType) {
         const positionsByInstrumentType = userModule.positions
           .filter((position) => position.instrumentType === instrumentType);
