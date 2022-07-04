@@ -3,7 +3,7 @@ import { PortfolioPosition } from '@/common/types/Portfolio';
 import Currency from '@/common/types/Currency';
 
 export default class MoneyUtils {
-  static format(amount: number, currency: Currency): string {
+  static format(amount: number, currency: Currency = Currency.USD): string {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency,

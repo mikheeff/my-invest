@@ -17,7 +17,7 @@ export default class UserService {
     return accounts;
   }
 
-  static async getPortfolioById(accountId = '2053831562'): Promise<Portfolio> {
+  static async getPortfolioById(accountId: string): Promise<Portfolio> {
     const { data } = await axios.post<Portfolio>(
       ApiUtils.getApiUrl(BackendServiceName.OPERATIONS_SERVICE, 'GetPortfolio'),
       { accountId },

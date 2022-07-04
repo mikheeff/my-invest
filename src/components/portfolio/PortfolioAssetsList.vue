@@ -9,18 +9,8 @@
           placeholder="Search"
         >
       </div>
-      <div class="portfolio__controls">
-        <button
-          @click="getInfo"
-          class="button button--primary">
-          Get info
-        </button>
-      </div>
     </div>
-    <div v-if="isLoading">Loading</div>
-    <ul
-      v-else
-      class="assets-list portfolio__assets-list">
+    <ul class="assets-list portfolio__assets-list">
       <ListItem
         v-for="asset in userModule.positions"
         :key="asset.figi"
@@ -42,23 +32,7 @@
     data() {
       return {
         userModule,
-        isLoading: false,
       };
-    },
-    created() {
-      this.getInfo();
-    },
-    methods: {
-      async getInfo() {
-        this.isLoading = true;
-
-        try {
-          await userModule.getAccounts();
-          userModule.accountId = userModule.accounts[0].id;
-        } finally {
-          this.isLoading = false;
-        }
-      },
     },
   });
 </script>

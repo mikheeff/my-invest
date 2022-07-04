@@ -2,22 +2,7 @@
   <div id="app" class="app">
     <main class="app-main app__main">
       <header class="app-header app__header">
-        Portfolio
-
-        <p>Choose your account</p>
-        <b-form-radio-group
-          id="accounts-group"
-          name="accounts-group"
-          v-model="userModule.accountId"
-          @input="userModule.getAllAssets()"
-          :buttons="true">
-          <b-form-radio
-            v-for="account in userModule.accounts"
-            :key="account.id"
-            :value="account.id">
-            {{ account.name }}
-          </b-form-radio>
-        </b-form-radio-group>
+        Portfolio {{ userModule.totalAmount | money }}
       </header>
       <router-view/>
     </main>
@@ -38,9 +23,6 @@
       return {
         userModule,
       };
-    },
-    async created() {
-      await userModule.getAccounts();
     },
   });
 </script>

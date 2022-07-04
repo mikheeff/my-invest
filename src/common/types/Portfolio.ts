@@ -11,4 +11,8 @@ export interface PortfolioPosition {
 export interface Portfolio {
   expectedYield: Amount,
   positions: PortfolioPosition[];
+  totalAmountBonds: Amount;
+  totalAmountCurrencies: Amount;
+  totalAmountEtf: Amount;
+  totalAmountShares: Amount;
 }
