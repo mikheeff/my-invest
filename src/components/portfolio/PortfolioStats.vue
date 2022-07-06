@@ -3,6 +3,8 @@
     <h1 class="portfolio-stats__title">Stats:</h1>
     <div class="portfolio-stats__content">
       <AssetClassStats />
+      <SharesRiskStats />
+      <SharesStats />
     </div>
   </div>
 </template>
@@ -11,11 +13,15 @@
   import Vue from 'vue';
   import userModule from '@/store/modules/userModule';
   import AssetClassStats from '@/components/portfolio/AssetClassStats.vue';
+  import SharesRiskStats from '@/components/portfolio/SharesRiskStats.vue';
+  import SharesStats from '@/components/portfolio/SharesStats.vue';
 
   export default Vue.extend({
     name: 'PortfolioStats',
     components: {
       AssetClassStats,
+      SharesRiskStats,
+      SharesStats,
     },
     data() {
       return {

@@ -3,7 +3,7 @@
     <h3 class="asset-class-stats__header">
       Assets Diversity
     </h3>
-    <div class="asset-class-stats">
+    <div class="asset-class-stats__chart">
       <DoughnutChart :chart-data="data"/>
     </div>
   </div>

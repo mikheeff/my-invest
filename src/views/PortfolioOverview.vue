@@ -45,7 +45,6 @@
         this.isLoading = true;
 
         try {
-          console.log('get accs');
           await userModule.getAccounts();
           userModule.accountId = userModule.accounts[1].id;
           await userModule.getAllAssets();

@@ -62,6 +62,24 @@ class UserModule extends ExtendedVuexModule<UserState> {
     return this.getTotalAmountByInstrumentType(InstrumentType.SHARE);
   }
 
+  get particularSharesAmount(): number {
+    if (!this.portfolio) {
+      return 0;
+    }
+
+    return MoneyUtils.getNumberFromAmount(this.portfolio.totalAmountShares) / this.usdPriceInRub;
+  }
+
+  get sharesPositions(): PortfolioPosition[] {
+    return this.positions.filter((pos) => pos.instrumentType === InstrumentType.SHARE);
+  }
+
+  get sharesEtfsAmount(): number {
+    const sharesEtfs = this.getEtfsPositionsByInstrumentType(InstrumentType.SHARE);
+
+    return this.getPositionsTotalAmount(sharesEtfs);
+  }
+
   get bondsAmount(): number {
     return this.getTotalAmountByInstrumentType(InstrumentType.BONDS);
   }
@@ -131,12 +149,16 @@ class UserModule extends ExtendedVuexModule<UserState> {
 
   getPositionsTotalAmount(positions: PortfolioPosition[]): number {
     return positions.reduce((acc, position) => {
-      const positionTotalAmount = MoneyUtils.getPositionTotalAmount(position);
-      const rate = this.getCurrencyRateToUsd(position.currentPrice.currency);
-      const positionAmountInUsd = positionTotalAmount / rate;
+      const positionAmountInUsd = this.getPositionAmountInUsd(position);
 
       return acc + positionAmountInUsd;
     }, 0);
+  }
+
+  getPositionAmountInUsd(position: PortfolioPosition): number {
+    const positionTotalAmount = MoneyUtils.getPositionTotalAmount(position);
+    const rate = this.getCurrencyRateToUsd(position.currentPrice.currency);
+    return positionTotalAmount / rate;
   }
 
   getCurrencyRateToUsd(currency: Currency) {
