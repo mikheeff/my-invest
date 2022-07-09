@@ -23,12 +23,24 @@
           labels: ['Shares', 'Bonds', 'Gold', 'Money'],
           datasets: [
             {
-              backgroundColor: ['#20C997', '#22B8CF', '#FCC419', '#845EF7'],
+              backgroundColor: ['#ABE6CE', '#51E2F5', '#F1D1B5', '#6C5B7B'],
               data: [
-                userModule.sharesAmount,
-                userModule.bondsAmount,
-                userModule.goldAmount,
-                userModule.currenciesAmount,
+                {
+                  name: 'Shares',
+                  amount: userModule.sharesAmount,
+                },
+                {
+                  name: 'Bonds',
+                  amount: userModule.bondsAmount,
+                },
+                {
+                  name: 'Gold',
+                  amount: userModule.goldAmount,
+                },
+                {
+                  name: 'Money',
+                  amount: userModule.currenciesAmount,
+                },
               ],
             },
           ],

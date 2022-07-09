@@ -28,10 +28,16 @@
           ],
           datasets: [
             {
-              backgroundColor: ['#20C997', '#22B8CF'],
+              backgroundColor: ['#ABE6CE', '#51E2F5'],
               data: [
-                userModule.sharesEtfsAmount,
-                userModule.particularSharesAmount,
+                {
+                  name: 'Shares Etfs',
+                  amount: userModule.sharesEtfsAmount,
+                },
+                {
+                  name: 'Particular shares',
+                  amount: userModule.particularSharesAmount,
+                },
               ],
             },
           ],

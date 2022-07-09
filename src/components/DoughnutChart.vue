@@ -22,9 +22,10 @@
     Tooltip,
     Legend,
     ArcElement,
-    CategoryScale, ChartType, TooltipItem,
+    CategoryScale, TooltipItem,
   } from 'chart.js';
   import MoneyUtils from '@/common/utils/MoneyUtils';
+  import { ChartItem } from '@/common/types/ChartItem';
 
   ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale);
 
@@ -66,21 +67,31 @@
         type: Array,
         default: () => [],
       },
+      totalAmount: {
+        type: Number,
+        default: null,
+      },
     },
     data() {
       return {
         chartOptions: {
           responsive: true,
           maintainAspectRatio: false,
+          parsing: {
+            key: 'amount',
+          },
           plugins: {
             tooltip: {
               callbacks: {
-                label: (tooltipItem: TooltipItem<'doughnut'>) => {
-                  const totalAmount = tooltipItem.dataset.data.reduce((acc, el) => acc + el, 0);
-                  const percent = (tooltipItem.parsed / totalAmount) * 100;
+                label: ({ dataset, parsed, raw }: TooltipItem<'doughnut'>) => {
+                  const data = dataset.data as unknown as ChartItem[];
+                  const element = raw as ChartItem;
+                  const totalAmount = this.totalAmount ?? data
+                    .reduce((acc, el) => acc + el.amount, 0);
+                  const percent = (parsed / totalAmount) * 100;
                   const percentFormatted = Math.abs(Math.round(percent * 100) / 100);
 
-                  return ` ${MoneyUtils.format(Number(tooltipItem.raw))} ${percentFormatted}%`;
+                  return `${element.name} ${MoneyUtils.format(Number(parsed))} ${percentFormatted}%`;
                 },
               },
             },
