@@ -13,6 +13,7 @@
   import Vue from 'vue';
   import DoughnutChart from '@/components/DoughnutChart.vue';
   import userModule from '@/store/modules/userModule';
+  import { orderBy } from '@/common/utils/GeneralUtils';
 
   export default Vue.extend({
     name: 'SharesCountriesStats',
@@ -44,11 +45,11 @@
                 '#AD64F0',
               ],
               data: [
-                ...Array.from(userModule.sharesAmountGroupedByCountry)
+                ...orderBy(Array.from(userModule.sharesAmountGroupedByCountry)
                   .map(([countryName, amount]) => ({
                     amount,
                     name: countryName,
-                  })),
+                  })), 'amount', 'desc'),
               ],
             },
           ],

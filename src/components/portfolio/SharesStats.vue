@@ -52,7 +52,7 @@
                 ...orderBy(userModule.sharesPositions.map((position) => ({
                   amount: userModule.getPositionAmountInUsd(position),
                   name: ALL_INSTRUMENTS.find((i) => i.figi === position.figi)?.name,
-                })), 'amount'),
+                })), 'amount', 'desc'),
               ],
             },
           ],

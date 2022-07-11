@@ -23,8 +23,6 @@
           labels: [
             'Shares Etfs',
             'Particular shares',
-            // ...userModule.sharesPositions.map((pos) => ALL_INSTRUMENTS
-            //   .find((i) => i.figi === pos.figi)?.name),
           ],
           datasets: [
             {
