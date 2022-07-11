@@ -16,9 +16,9 @@
           class="app-label">{{ profit }}</span>
       </span>
     </div>
-    <div class="asset-card__item-cell">
+    <div class="list-item__item-cell">
       <span class="list-item__item-cell-value">$3,569.11</span>
-      <span class="list-item__item-cell-description">+ 178.2%</span>
+      <span class="list-item__item-cell-description">{{ country }}</span>
     </div>
   </li>
 </template>
@@ -44,6 +44,9 @@
       },
       assetName(): string {
         return this.instrumentInfo ? this.instrumentInfo.name : '';
+      },
+      country(): string {
+        return this.instrumentInfo ? this.instrumentInfo.countryOfRiskName : '';
       },
       description(): string | undefined {
         const typeString = this.asset.instrumentType === InstrumentType.ETF
@@ -103,7 +106,6 @@
     &__item-cell {
       display: flex;
       flex-direction: column;
-      margin-right: 100px;
       width: 25%;
 
       &:last-child {

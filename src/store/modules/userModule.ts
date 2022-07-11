@@ -7,7 +7,7 @@ import { Portfolio, PortfolioPosition } from '@/common/types/Portfolio';
 import { Instrument, InstrumentType } from '@/common/types/Instrument';
 import MoneyUtils from '@/common/utils/MoneyUtils';
 import {
-  ALL_ETFS,
+  ALL_ETFS, ALL_INSTRUMENTS,
   CURRENCY_FIGI_MAP,
   FOCUS_TYPE_INSTRUMENT_TYPE_MAP,
 } from '@/common/constants/allInstruments';
@@ -78,6 +78,48 @@ class UserModule extends ExtendedVuexModule<UserState> {
     const sharesEtfs = this.getEtfsPositionsByInstrumentType(InstrumentType.SHARE);
 
     return this.getPositionsTotalAmount(sharesEtfs);
+  }
+
+  get sharesAmountGroupedByCountry(): Map<string, number> {
+    return [
+      ...this.sharesPositions,
+      ...this.getEtfsPositionsByInstrumentType(InstrumentType.SHARE),
+    ].reduce<Map<string, number>>((map, position) => {
+      const instrument = ALL_INSTRUMENTS
+        .find((instrument) => instrument.figi === position.figi);
+
+      const amount = this.getPositionAmountInUsd(position);
+
+      if (!instrument) {
+        return map;
+      }
+
+      if (instrument.countryOfRiskName === '' && instrument.countriesOfRisk?.length) {
+        instrument.countriesOfRisk.forEach((country) => {
+          const etfCountryAmount = (country.relativeValue / 100) * amount;
+          const currentAmount = map.get(country.name);
+
+          if (currentAmount !== undefined) {
+            map.set(country.name, etfCountryAmount + currentAmount);
+            return;
+          }
+
+          map.set(country.name, etfCountryAmount);
+        });
+
+        return map;
+      }
+
+      const currentAmount = map.get(instrument.countryOfRiskName);
+
+      if (currentAmount !== undefined) {
+        map.set(instrument.countryOfRiskName, amount + currentAmount);
+
+        return map;
+      }
+
+      return map.set(instrument.countryOfRiskName, amount);
+    }, new Map<string, number>());
   }
 
   get bondsAmount(): number {

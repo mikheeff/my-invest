@@ -13,6 +13,11 @@ export interface Instrument {
   name: string;
   currency: string;
   countryOfRisk: string;
+  countriesOfRisk?: {
+    name: string;
+    relativeValue: number;
+  }[];
+  countryOfRiskName: string;
 }
 
 export interface EtfInstrument extends Instrument {

@@ -91,7 +91,7 @@
                   const percent = (parsed / totalAmount) * 100;
                   const percentFormatted = Math.abs(Math.round(percent * 100) / 100);
 
-                  return `${element.name} ${MoneyUtils.format(Number(parsed))} ${percentFormatted}%`;
+                  return `${element.name} ${MoneyUtils.format(Number(parsed))} (${percentFormatted}%)`;
                 },
               },
             },
