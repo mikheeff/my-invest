@@ -4,7 +4,7 @@ export {
   orderBy,
 } from 'lodash';
 
-export const setAmountByCountry = (
+export const setAmountByName = (
   map: Map<string, number>,
   name: string, amount: number,
 ): Map<string, number> => {

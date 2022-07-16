@@ -17,7 +17,7 @@
       </span>
     </div>
     <div class="list-item__item-cell">
-      <span class="list-item__item-cell-value">$3,569.11</span>
+      <span class="list-item__item-cell-value">{{ currency }}</span>
       <span class="list-item__item-cell-description">{{ country }}</span>
     </div>
   </li>
@@ -47,6 +47,9 @@
       },
       country(): string {
         return this.instrumentInfo ? this.instrumentInfo.countryOfRiskName : '';
+      },
+      currency(): string {
+        return this.instrumentInfo ? this.instrumentInfo.currency.toUpperCase() : '';
       },
       description(): string | undefined {
         const typeString = this.asset.instrumentType === InstrumentType.ETF

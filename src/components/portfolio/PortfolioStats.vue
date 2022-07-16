@@ -7,6 +7,7 @@
       <SharesStats />
       <SharesCountriesStats />
       <BondsCountriesStats />
+      <CurrencyStats />
     </div>
   </div>
 </template>
@@ -19,6 +20,7 @@
   import SharesStats from '@/components/portfolio/SharesStats.vue';
   import SharesCountriesStats from '@/components/portfolio/SharesCountriesStats.vue';
   import BondsCountriesStats from '@/components/portfolio/BondsCountriesStats.vue';
+  import CurrencyStats from '@/components/portfolio/CurrencyStats.vue';
 
   export default Vue.extend({
     name: 'PortfolioStats',
@@ -28,6 +30,7 @@
       SharesStats,
       SharesCountriesStats,
       BondsCountriesStats,
+      CurrencyStats,
     },
     data() {
       return {

@@ -14,7 +14,7 @@ import {
 } from '@/common/constants/allInstruments';
 import Currency from '@/common/types/Currency';
 import FocusType from '@/common/types/FocusType';
-import { setAmountByCountry } from '@/common/utils/GeneralUtils';
+import { setAmountByName } from '@/common/utils/GeneralUtils';
 import Country from '@/common/types/Country';
 
 interface UserState {
@@ -104,7 +104,22 @@ class UserModule extends ExtendedVuexModule<UserState> {
         ? COUNTRY_REGION_MAP[instrument.countryOfRisk as Country]
         : instrument.countriesOfRiskName ?? '';
 
-      return setAmountByCountry(map, regionName, amount);
+      return setAmountByName(map, regionName, amount);
+    }, new Map<string, number>());
+  }
+
+  get positionsAmountGroupedByCurrency(): Map<string, number> {
+    return this.positions.reduce<Map<string, number>>((map, position) => {
+      const instrument = ALL_INSTRUMENTS
+        .find((instrument) => instrument.figi === position.figi);
+
+      const amount = this.getPositionAmountInUsd(position);
+
+      if (!instrument) {
+        return map;
+      }
+
+      return setAmountByName(map, instrument.currency, amount);
     }, new Map<string, number>());
   }
 
