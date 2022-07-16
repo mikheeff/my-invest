@@ -7,12 +7,14 @@ import { Portfolio, PortfolioPosition } from '@/common/types/Portfolio';
 import { Instrument, InstrumentType } from '@/common/types/Instrument';
 import MoneyUtils from '@/common/utils/MoneyUtils';
 import {
-  ALL_ETFS, ALL_INSTRUMENTS,
+  ALL_ETFS,
+  ALL_INSTRUMENTS,
   CURRENCY_FIGI_MAP,
   FOCUS_TYPE_INSTRUMENT_TYPE_MAP,
 } from '@/common/constants/allInstruments';
 import Currency from '@/common/types/Currency';
 import FocusType from '@/common/types/FocusType';
+import { setAmountByCountry } from '@/common/utils/GeneralUtils';
 
 interface UserState {
   accounts: UserAccount[];
@@ -71,7 +73,13 @@ class UserModule extends ExtendedVuexModule<UserState> {
   }
 
   get sharesPositions(): PortfolioPosition[] {
-    return this.positions.filter((pos) => pos.instrumentType === InstrumentType.SHARE);
+    return this.positions
+      .filter((pos) => pos.instrumentType === InstrumentType.SHARE);
+  }
+
+  get bondsPositions(): PortfolioPosition[] {
+    return this.positions
+      .filter((pos) => pos.instrumentType === InstrumentType.BONDS);
   }
 
   get sharesEtfsAmount(): number {
@@ -80,11 +88,8 @@ class UserModule extends ExtendedVuexModule<UserState> {
     return this.getPositionsTotalAmount(sharesEtfs);
   }
 
-  get sharesAmountGroupedByCountry(): Map<string, number> {
-    return [
-      ...this.sharesPositions,
-      ...this.getEtfsPositionsByInstrumentType(InstrumentType.SHARE),
-    ].reduce<Map<string, number>>((map, position) => {
+  getPositionsAmountGroupedByCountry(positions: PortfolioPosition[]): Map<string, number> {
+    return positions.reduce<Map<string, number>>((map, position) => {
       const instrument = ALL_INSTRUMENTS
         .find((instrument) => instrument.figi === position.figi);
 
@@ -97,28 +102,14 @@ class UserModule extends ExtendedVuexModule<UserState> {
       if (instrument.countryOfRiskName === '' && instrument.countriesOfRisk?.length) {
         instrument.countriesOfRisk.forEach((country) => {
           const etfCountryAmount = (country.relativeValue / 100) * amount;
-          const currentAmount = map.get(country.name);
 
-          if (currentAmount !== undefined) {
-            map.set(country.name, etfCountryAmount + currentAmount);
-            return;
-          }
-
-          map.set(country.name, etfCountryAmount);
+          return setAmountByCountry(map, country.name, etfCountryAmount);
         });
 
         return map;
       }
 
-      const currentAmount = map.get(instrument.countryOfRiskName);
-
-      if (currentAmount !== undefined) {
-        map.set(instrument.countryOfRiskName, amount + currentAmount);
-
-        return map;
-      }
-
-      return map.set(instrument.countryOfRiskName, amount);
+      return setAmountByCountry(map, instrument.countryOfRiskName, amount);
     }, new Map<string, number>());
   }
 

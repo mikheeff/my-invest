@@ -1,7 +1,7 @@
 <template>
   <div class="asset-class-stats">
     <h3 class="asset-class-stats__header">
-      Shares - countries
+      Bonds - countries
     </h3>
     <div class="asset-class-stats__chart">
       <DoughnutChart :chart-data="data"/>
@@ -17,7 +17,7 @@
   import { InstrumentType } from '@/common/types/Instrument';
 
   export default Vue.extend({
-    name: 'SharesCountriesStats',
+    name: 'BondsCountriesStats',
     components: { DoughnutChart },
     data() {
       return {
@@ -48,8 +48,8 @@
               data: [
                 ...orderBy(Array.from(userModule.getPositionsAmountGroupedByCountry(
                   [
-                    ...userModule.sharesPositions,
-                    ...userModule.getEtfsPositionsByInstrumentType(InstrumentType.SHARE),
+                    ...userModule.bondsPositions,
+                    ...userModule.getEtfsPositionsByInstrumentType(InstrumentType.BONDS),
                   ],
                 ))
                   .map(([countryName, amount]) => ({
