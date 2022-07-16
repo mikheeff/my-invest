@@ -2211,8 +2211,8 @@
     "name": "FinEx Облигации TIPS (RUB, хедж)",
     "exchange": "MOEX_PLUS",
     "focusType": "fixed_income",
-    "countryOfRisk": "IE",
-    "countryOfRiskName": "",
+    "countryOfRisk": "US",
+    "countryOfRiskName": "Соединенные Штаты Америки",
     "sector": "other",
     "rebalancingFreq": "",
     "tradingStatus": "SECURITY_TRADING_STATUS_BREAK_IN_TRADING",
@@ -2304,6 +2304,7 @@
     "focusType": "equity",
     "releasedDate": "2021-10-04T00:00:00Z",
     "countryOfRisk": "",
+    "countryOfRiskName": "",
     "countriesOfRisk": [
       {
         "name": "Китайская Народная Республика",
@@ -2366,7 +2367,6 @@
         "problem": false
       }
     ],
-    "countryOfRiskName": "",
     "sector": "other",
     "rebalancingFreq": "annual",
     "tradingStatus": "SECURITY_TRADING_STATUS_BREAK_IN_TRADING",
@@ -2495,6 +2495,62 @@
     "releasedDate": "2021-10-04T00:00:00Z",
     "countryOfRisk": "",
     "countryOfRiskName": "",
+    "countriesOfRisk": [
+      {
+        "name": "Франция",
+        "value": 2452870.11,
+        "relativeValue": 42.95,
+        "problem": false
+      },
+      {
+        "name": "Федеративная Республика Германия",
+        "value": 1270906.21,
+        "relativeValue": 22.25,
+        "problem": false
+      },
+      {
+        "name": "Нидерланды",
+        "value": 886249.26,
+        "relativeValue": 15.52,
+        "problem": false
+      },
+      {
+        "name": "Дания",
+        "value": 421106.08,
+        "relativeValue": 7.37,
+        "problem": false
+      },
+      {
+        "name": "Италия",
+        "value": 200514.38,
+        "relativeValue": 3.51,
+        "problem": false
+      },
+      {
+        "name": "Испания",
+        "value": 162175.26,
+        "relativeValue": 2.84,
+        "problem": false
+      },
+      {
+        "name": "Соединенное Королевство",
+        "value": 74661.93,
+        "relativeValue": 1.3,
+        "problem": false
+      },
+      {
+        "name": "Бельгия",
+        "value": 68916.96,
+        "relativeValue": 1.2,
+        "problem": false
+      },
+      {
+        "name": "Швеция",
+        "value": 53440.5,
+        "relativeValue": 0.93,
+        "problem": false
+      }
+    ],
     "sector": "other",
     "rebalancingFreq": "annual",
     "tradingStatus": "SECURITY_TRADING_STATUS_BREAK_IN_TRADING",
