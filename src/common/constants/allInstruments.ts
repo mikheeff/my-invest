@@ -5,6 +5,8 @@ import etfs from '@/data/etfs.json';
 import currencies from '@/data/currencies.json';
 import Currency from '@/common/types/Currency';
 import FocusType from '@/common/types/FocusType';
+import Country from '@/common/types/Country';
+import Region from '@/common/types/Region';
 
 const sharesList = shares.instruments as Instrument[];
 const bondsList = bonds.instruments as Instrument[];
@@ -24,6 +26,14 @@ export const CURRENCY_FIGI_MAP = {
   [Currency.EUR]: 'BBG0013HJJ31',
   [Currency.RUB]: 'RUB000UTSTOM',
   [Currency.GOLD]: 'BBG000VJ5YR4',
+};
+
+export const COUNTRY_REGION_MAP: Record<Country, Region> = {
+  [Country.DE]: Region.EUROPE,
+  [Country.US]: Region.US,
+  [Country.RU]: Region.RU,
+  [Country.CN]: Region.ASIA,
+  [Country.KZ]: Region.ASIA,
 };
 
 export const FOCUS_TYPE_INSTRUMENT_TYPE_MAP: Partial<Record<FocusType, InstrumentType>> = {

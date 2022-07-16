@@ -8,13 +8,14 @@ import { Instrument, InstrumentType } from '@/common/types/Instrument';
 import MoneyUtils from '@/common/utils/MoneyUtils';
 import {
   ALL_ETFS,
-  ALL_INSTRUMENTS,
+  ALL_INSTRUMENTS, COUNTRY_REGION_MAP,
   CURRENCY_FIGI_MAP,
   FOCUS_TYPE_INSTRUMENT_TYPE_MAP,
 } from '@/common/constants/allInstruments';
 import Currency from '@/common/types/Currency';
 import FocusType from '@/common/types/FocusType';
 import { setAmountByCountry } from '@/common/utils/GeneralUtils';
+import Country from '@/common/types/Country';
 
 interface UserState {
   accounts: UserAccount[];
@@ -99,17 +100,11 @@ class UserModule extends ExtendedVuexModule<UserState> {
         return map;
       }
 
-      if (instrument.countryOfRiskName === '' && instrument.countriesOfRisk?.length) {
-        instrument.countriesOfRisk.forEach((country) => {
-          const etfCountryAmount = (country.relativeValue / 100) * amount;
+      const regionName = instrument.countryOfRisk
+        ? COUNTRY_REGION_MAP[instrument.countryOfRisk as Country]
+        : instrument.countriesOfRiskName ?? '';
 
-          return setAmountByCountry(map, country.name, etfCountryAmount);
-        });
-
-        return map;
-      }
-
-      return setAmountByCountry(map, instrument.countryOfRiskName, amount);
+      return setAmountByCountry(map, regionName, amount);
     }, new Map<string, number>());
   }
 
@@ -212,7 +207,7 @@ class UserModule extends ExtendedVuexModule<UserState> {
 
     const currencyPriceInRub = MoneyUtils.getNumberFromAmount(currencyPosition.currentPrice);
 
-    return currencyPriceInRub / this.usdPriceInRub;
+    return this.usdPriceInRub / currencyPriceInRub;
   }
 
   get usdPriceInRub() {

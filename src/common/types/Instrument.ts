@@ -13,10 +13,8 @@ export interface Instrument {
   name: string;
   currency: string;
   countryOfRisk: string;
-  countriesOfRisk?: {
-    name: string;
-    relativeValue: number;
-  }[];
+  countriesOfRisk?: string;
+  countriesOfRiskName?: string;
   countryOfRiskName: string;
 }
 
